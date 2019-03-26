@@ -10,16 +10,25 @@ const app = express();
 const superagent = require('superagent');
 const PORT = process.env.PORT;
 
+//middleware
 app.use (express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
+//sets the view engine for the server side
 app.set('view engine', 'ejs');
 
+//API routs
 //path to view page
-app.get('/', function(request, response){
-  response.render('pages/index');
-});
+app.get('/', newSearch);
 
+// app.get('/', function(request, response){
+//   response.render('pages/index');
+// });
+
+//creates a new search to Google Books API
+app.post('/searches', getBook);
+
+//catch-all
 app.get ('*', (request, response) => response.status(404).send('This is route does not exist'));
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -29,30 +38,41 @@ function handleError(err, res){
   if (res) res.status(500).send('You have achieved an error. Congratulations!');
 }
 
+//HELPER FUNCTIONS
+
+function Book(info) {
+  const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
+
+  this.title = info.title || 'No title available';
+}
+
+function newSearch (request, response) {
+  response.render('pages/index');
+}
+
 //function to make query for book info
 function getBook(request, response) {
-  // const url = 'something';
-
-  // return superagent.get(url)
-  //   .then(bookData => {
-  //     if (!bookData.body.SOMETHING.length) {
-  //       throw 'NO BOOK DATA FROM API';
-  //     } else {
-  //       let bookDetails = new Book(bookData.body.SOMETHING[0], request.query);
-  //       // response.send(bookDetails)
-
-  //     }
-  //   })
-
-  const url='something';
-  return superagent.get(url)
-    .then(bookResults =>{
-      const bookDetails = bookResults.body.results.map(book =>{
-        let searchedBook = new Book(book.id)//?????????
-        return searchedBook;
-      })
-      response.send(bookDetails)
-    })
+  let url='https://www.googleapis.com/books/v1/volumes?q=';
+  console.log(request.body);
+  if (request.body.search[1] === 'title') {
+    url += `+intitle:${request.body.search[0]}`;
+  }
+  if (request.body.search[1] === 'author') {
+    url += `+inauthor:${request.body.search[0]}`;
+  }
+  console.log(url);
+  superagent.get(url)
+    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumesInfo)))
+    .then(results => response.render(`pages/searches/show`, {searchResults: results}))
     .catch(error => handleError(error, response));
 }
 
+  // return superagent.get(url)
+  //   .then(bookResults =>{
+  //     const bookDetails = bookResults.body.results.map(book =>{
+  //       let searchedBook = new Book(book.id)//?????????
+  //       return searchedBook;
+  //     })
+  //     response.send(bookDetails)
+  //   })
+  //   .catch(error => handleError(error, response));
