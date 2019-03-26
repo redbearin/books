@@ -21,6 +21,59 @@ TODO: see tree
 ## Change Log
 3-26-2019 10:00 - proof of life with basic server connected to index, and stylesheets linked to index.
 
+## Feature Log
+Number and name of feature: Feature 1 - set up and proof of life
+
+Estimate of time needed to complete: 50 minutes
+
+Start time: 9:00
+
+Finish time: 10:00
+Actual time needed to complete: 1 hour
+------------------------------------------------
+
+Number and name of feature: Feature 2 - search the google books API fo that we can view results
+
+Estimate of time needed to complete: 1 hour
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:
+-------------------------------------------------------
+Number and name of feature: Feature 3 - browse search results
+
+Estimate of time needed to complete: 1.5 hours
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:
+
+-------------------------------------------------------
+Number and name of feature: Feature 4 - error messages
+
+Estimate of time needed to complete: 30 minutes
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:
+
+-------------------------------------------------------
+Number and name of feature: Feature 5 - clean UI/front end
+
+Estimate of time needed to complete: 1.5 hours
+
+Start time:
+
+Finish time:
+
+Actual time needed to complete:
+
 ## Credits and Collaborations
 
 Code Fellows supplied wireframes, practice, tutorials, general help, and project guidelines
