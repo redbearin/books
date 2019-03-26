@@ -18,6 +18,8 @@
   "homepage": "https://github.com/redbearin/books#readme",
   "dependencies": {
     "dotenv": "^7.0.0",
-    "express": "^4.16.4"
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "superagent": "^4.1.0"
   }
 }
