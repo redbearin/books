@@ -28,15 +28,15 @@ Estimate of time needed to complete: 50 minutes
 
 Start time: 9:00
 
-Finish time: 10:00
-Actual time needed to complete: 1 hour
+Finish time: 10:10
+Actual time needed to complete: 1 hour 10 minutes, including heroku deployment
 ------------------------------------------------
 
 Number and name of feature: Feature 2 - search the google books API fo that we can view results
 
 Estimate of time needed to complete: 1 hour
 
-Start time:
+Start time:10:43
 
 Finish time:
 
@@ -57,7 +57,7 @@ Number and name of feature: Feature 4 - error messages
 
 Estimate of time needed to complete: 30 minutes
 
-Start time:
+Start time:11:12
 
 Finish time:
 
