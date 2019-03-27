@@ -27,9 +27,6 @@ app.set('view engine', 'ejs');
 //path to view page
 app.get('/', newSearch);
 
-//TODO: might be broken?
-app.get('/books/:book_id', getBook);
-
 //creates a new search to Google Books API
 app.post('/searches', getBook);
 
@@ -61,55 +58,94 @@ function newSearch (request, response) {
 
 //function to make query for book info
 function getBook(request, response) {
-  console.log('hello from get books');
-  const selectSQL = `SELECT * FROM books where search_query=$1;`;
-  //TODO: also broken
-  //const values = [request.query.info];
-  const values = [request.params.book_id];
-
-
-  client.query(selectSQL)
-    .then(result => {
-      if(result.rowCount > 0){
-        response.send(result.rows[0]);
-      } else{
-        // beginning of url
-        console.log('===========this is request.body.search', request.body.search)
-        let url=`https://www.googleapis.com/books/v1/volumes?q=`;
-        if (request.body.search[1] === 'title') {
-          url += `+intitle:${request.body.search[0]}`;
-        }
-        if (request.body.search[1] === 'author') {
-          url += `+inauthor:${request.body.search[0]}`;
-        }
-        //end of url
-        superagent.get(url)
-          .then(apiResponse => {
-            console.log('========API RESPONSE==========', apiResponse.body)
-
-            if (!apiResponse.body.items.volumeInfo.title) {
-              throw 'NO BOOK INFORMATION';
-            } else {
-              let loggedBook = new Book(bookResult.volumeInfo, request.query);
-
-              let insertSql = `INSERT INTO books (authors, title, description, isbn, thumbnail) VALUES($1, $2, $3, $4, $5) RETURNING id;`;
-              let newValues = Object.values(loggedBook);
-
-              client.query(insertSql, newValues)
-                .then(sqlReturn => {
-                  loggedBook.id = sqlReturn.rows[0].id;
-                  response.send(loggedBook);
-                });
-            }
-          });
-      }
-    })
-
-    .catch(error => handleError(error, response))
-    // .then(apiResponse => apiResponse.body.items.map(bookResult =>{
-    //   return new Book(bookResult.volumeInfo);
-    // }))
-    // .then(results => response.render(`pages/searches/show`, {searchResults: results}))
-    // .catch(error => handleError(error, response))
+  let url=`https://www.googleapis.com/books/v1/volumes?q=`;
+  console.log(request.body);
+  if (request.body.search[1] === 'title') {
+    url += `+intitle:${request.body.search[0]}`;
+  }
+  if (request.body.search[1] === 'author') {
+    url += `+inauthor:${request.body.search[0]}`;
+  }
+  superagent.get(url)
+    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
+    .then(results => response.render(`pages/searches/show`, {searchResults: results}))
+    .catch(error => handleError(error, response));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*====================================CORPSE CODE==================*/
+//we want to save this code where we can easily access it again when we start refactoring for sql to the specs of the lab.
+//we got ahead of ourselves, and this function stopped rendering pages.
+
+//function to make query for book info
+// function getBook(request, response) {
+//   console.log('hello from get books');
+//   const selectSQL = `SELECT * FROM books where search_query=$1;`;
+//   //TODO: also broken
+//   //const values = [request.query.info];
+//   const values = [request.params.content];
+
+
+//   client.query(selectSQL)
+//     .then(result => {
+//       if(result.rowCount > 0){
+//         response.send(result.rows[0]);
+//       } else{
+//         // beginning of url
+//         console.log('===========this is request.body.search', request.body.search)
+//         let url=`https://www.googleapis.com/books/v1/volumes?q=`;
+//         if (request.body.search[1] === 'title') {
+//           url += `+intitle:${request.body.search[0]}`;
+//         }
+//         if (request.body.search[1] === 'author') {
+//           url += `+inauthor:${request.body.search[0]}`;
+//         }
+//         //end of url
+//         superagent.get(url)
+//           .then(apiResponse => {
+//             console.log('========API RESPONSE==========', apiResponse.body)
+
+//             if (!apiResponse.body.items.volumeInfo.title) {
+//               throw 'NO BOOK INFORMATION';
+//             } else {
+//               let loggedBook = new Book(bookResult.volumeInfo, request.query);
+
+//               let insertSql = `INSERT INTO books (authors, title, description, isbn, thumbnail) VALUES($1, $2, $3, $4, $5) RETURNING id;`;
+//               let newValues = Object.values(loggedBook);
+
+//               client.query(insertSql, newValues)
+//                 .then(sqlReturn => {
+//                   loggedBook.id = sqlReturn.rows[0].id;
+//                   response.send(loggedBook);
+//                 });
+//             }
+//           });
+//       }
+//     })
+
+//     .catch(error => handleError(error, response))
+//     // .then(apiResponse => apiResponse.body.items.map(bookResult =>{
+//     //   return new Book(bookResult.volumeInfo);
+//     // }))
+//     // .then(results => response.render(`pages/searches/show`, {searchResults: results}))
+//     // .catch(error => handleError(error, response))
+// }
 
