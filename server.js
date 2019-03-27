@@ -42,11 +42,11 @@ function handleError(err, res){
 
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
-  this.author = info.author || 'No author available';
+  this.authors = info.authors || 'No author available';
   this.title = info.title || 'No title available';
   this.description = info.description || 'No description available';
   this.isbn = info.isbn || 'No ISBN available';
-  this.thumbnail = info.thumbnail || placeholderImage;
+  this.thumbnail = info.imageLinks.thumbnail.replace('http://', 'https://') || placeholderImage;
 }
 
 function newSearch (request, response) {
