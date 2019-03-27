@@ -1,0 +1,23 @@
+/* base mobile layout*/
+
+img {
+    width: 150px;
+}
+
+p {
+    width: 250px;
+}
+
+form{
+margin-left: 15%;
+border: 1px #dadbe5 solid;
+box-sizing: border-box
+}
+
+form > input{
+  height: 50px;
+  width: 300px;
+  border: 1px white solid;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
