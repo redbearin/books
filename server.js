@@ -45,8 +45,8 @@ function Book(info) {
   this.author = info.author || 'No author available';
   this.title = info.title || 'No title available';
   this.description = info.description || 'No description available';
-  this.isbn = info.isbn || 'No ISBN available';
-  this.thumbnail = info.thumbnail || placeholderImage;
+  this.isbn = info.industryIdentifiers.isbn || 'No ISBN available';
+  this.thumbnail = info.imageLinks.thumbnail || placeholderImage;
 }
 
 function newSearch (request, response) {
@@ -64,8 +64,12 @@ function getBook(request, response) {
     url += `+inauthor:${request.body.search[0]}`;
   }
   superagent.get(url)
-    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
+    .then(apiResponse => apiResponse.body.items.map(bookResult =>{
+      let loggedBook = new Book(bookResult.volumeInfo);
+      console.log('Is the book working?', loggedBook)
+      return new Book(bookResult.volumeInfo);
+    }))
     .then(results => response.render(`pages/searches/show`, {searchResults: results}))
-    .catch(error => handleError(error, response));
+    .catch(error => handleError(error, response))
 }
 
