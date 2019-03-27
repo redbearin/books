@@ -13,13 +13,18 @@
 </head>
 <body>
     <h1>My book list</h1>
-    <p><a ref="/">Home page</a></p>
-    <ul>
-        <li>
-            <p>Hello world! Coming soon!</p>
-        </li>
-    </ul>
-    
+    <main>
+        <ul>
+            <% searchResults.forEach(book => { %>
+                <li class="content">
+                    <img src="<%=book.thumbnail%>" alt="image of <%= book.thumbnail %>">
+                    <h3 class="bookTitle"><%=book.title %></h3>
+                    <h5 class="bookAuthors"><%=book.authors%></h5>
+                    <p class="bookDescription"><%=book.description %></p>
+                </li>
+            <% }); %>      
+        </ul> 
+    </main>  
 </body>
 </html>
 
