@@ -12,8 +12,8 @@
     <title>List of Books</title>
 </head>
 <body>
-    <h1>My book list</h1>
     <main>
+            <h1>My book list</h1>
         <ul>
             <% searchResults.forEach(book => { %>
                 <li class="content">
@@ -29,14 +29,6 @@
                       </fieldset>
                 </li>
             <% }); %>    
-            <li>  
-            <!-- <fieldset>
-                <label for="Select">
-                  <span>Select this Book</span>
-                  <input type="radio" name="select" value="selected-book" required>
-                </label>
-              </fieldset> -->
-            </li>
         </ul> 
     </main>  
 </body>
