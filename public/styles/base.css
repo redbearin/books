@@ -13,3 +13,7 @@ main{
     display: flex;
     flex-direction: column;
 }
+
+.bookTitle{
+    font-size: 3ems;
+}
