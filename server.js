@@ -27,8 +27,15 @@ app.set('view engine', 'ejs');
 //path to view page
 app.get('/', newSearch);
 
+//internal local host routes
+app.get('/books/:book_id', getOneBook)
+
+
+
+
 //creates a new search to Google Books API
 app.post('/searches', getBook);
+
 
 //catch-all
 app.get ('*', (request, response) => response.status(404).send('This is route does not exist'));
@@ -74,13 +81,36 @@ function getBook(request, response) {
 
 
 
-// function getOneBook(request, response){
-//   console.log('BOOK ID', request.params.task_id);
+function getOneBook(request, response){
+  console.log('BOOK ID', request.params.task_id);
 
-// }
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.book_id];
 
+  return client.query(SQL, values)
+    .then(bookResult =>{
+      return response.render('pages/detail', {book: bookResult.rows[0]});
+    })
+    .catch(error => handleError(error, response));
+}
 
+//TODO: we need to add a route for the function and modify the routes for the newSearch functions
 
+function addBookToDB(request, response){
+  console.log(request.body);
+
+  let{authors, title, description, isbn, thumbnail} = request.body;
+
+  let SQL= 'INSERT INTO books(authors, title, description, isbn, thumbnail) VALUES ($1, $2, $3, $4, $5);';
+  let values = [authors, title, description, isbn, thumbnail];
+
+  return client.query(SQL, values)
+    .then(sqlResult =>{
+      console.log(sqlResult);
+      response.redirect('/')
+    })
+    .catch(error => handleError(error, response));
+}
 
 
 
