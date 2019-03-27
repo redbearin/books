@@ -9,11 +9,11 @@
     <link rel="stylesheet"  href="./styles/layout.css">
     <link rel="stylesheet"  href="./styles/modules.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <title>Document</title>
+    <title>List of Books</title>
 </head>
 <body>
-    <h1>My book list</h1>
     <main>
+            <h1>My book list</h1>
         <ul>
             <% searchResults.forEach(book => { %>
                 <li class="content">
@@ -21,8 +21,14 @@
                     <h3 class="bookTitle"><%=book.title %></h3>
                     <h5 class="bookAuthors"><%=book.authors%></h5>
                     <p class="bookDescription"><%=book.description %></p>
+                    <fieldset>
+                        <label for="Select">
+                          <span>Select this Book</span>
+                          <input type="radio" name="select" value="selected-book" required>
+                        </label>
+                      </fieldset>
                 </li>
-            <% }); %>      
+            <% }); %>    
         </ul> 
     </main>  
 </body>
