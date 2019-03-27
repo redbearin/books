@@ -74,7 +74,8 @@ function getBook(request, response) {
 
 
 
-// function getOneBook{
+// function getOneBook(request, response){
+//   console.log('BOOK ID', request.params.task_id);
 
 // }
 
