@@ -17,7 +17,7 @@ app.use(express.static('./public'));
 //sets the view engine for the server side
 app.set('view engine', 'ejs');
 
-//API routs
+//API routes
 //path to view page
 app.get('/', newSearch);
 
@@ -42,8 +42,11 @@ function handleError(err, res){
 
 function Book(info) {
   const placeholderImage = 'https://i.imgur.com/J5LVHEL.jpg';
-
+  this.author = info.author || 'No author available';
   this.title = info.title || 'No title available';
+  this.description = info.description || 'No description available';
+  this.isbn = info.isbn || 'No ISBN available';
+  this.thumbnail = info.thumbnail || placeholderImage;
 }
 
 function newSearch (request, response) {
@@ -52,7 +55,7 @@ function newSearch (request, response) {
 
 //function to make query for book info
 function getBook(request, response) {
-  let url='https://www.googleapis.com/books/v1/volumes?q=';
+  let url=`https://www.googleapis.com/books/v1/volumes?q=`;
   console.log(request.body);
   if (request.body.search[1] === 'title') {
     url += `+intitle:${request.body.search[0]}`;
@@ -60,19 +63,9 @@ function getBook(request, response) {
   if (request.body.search[1] === 'author') {
     url += `+inauthor:${request.body.search[0]}`;
   }
-  console.log(url);
   superagent.get(url)
-    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumesInfo)))
+    .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render(`pages/searches/show`, {searchResults: results}))
     .catch(error => handleError(error, response));
 }
 
-  // return superagent.get(url)
-  //   .then(bookResults =>{
-  //     const bookDetails = bookResults.body.results.map(book =>{
-  //       let searchedBook = new Book(book.id)//?????????
-  //       return searchedBook;
-  //     })
-  //     response.send(bookDetails)
-  //   })
-  //   .catch(error => handleError(error, response));
