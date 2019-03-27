@@ -6,4 +6,8 @@ body {
 }
 
 /* base mobile layout*/
-
+main{
+    display: grid;
+    grid-template-columns: 10% repeat(10);
+    grid-template-rows: 10% repeat(10);
+}
