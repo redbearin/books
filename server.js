@@ -6,6 +6,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
+const pg = require('pg');
+
 //environment set up
 const superagent = require('superagent');
 const PORT = process.env.PORT;
@@ -14,6 +16,10 @@ const PORT = process.env.PORT;
 app.use (express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
+//database setup
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.log(err));
 //sets the view engine for the server side
 app.set('view engine', 'ejs');
 
@@ -21,9 +27,8 @@ app.set('view engine', 'ejs');
 //path to view page
 app.get('/', newSearch);
 
-// app.get('/', function(request, response){
-//   response.render('pages/index');
-// });
+//TODO: might be broken?
+app.get('/books/:book_id', getBook);
 
 //creates a new search to Google Books API
 app.post('/searches', getBook);
@@ -49,27 +54,62 @@ function Book(info) {
   this.thumbnail = info.imageLinks.thumbnail.replace('http://', 'https://') || placeholderImage;
 }
 
+
 function newSearch (request, response) {
   response.render('pages/index');
 }
 
 //function to make query for book info
 function getBook(request, response) {
-  let url=`https://www.googleapis.com/books/v1/volumes?q=`;
-  console.log(request.body);
-  if (request.body.search[1] === 'title') {
-    url += `+intitle:${request.body.search[0]}`;
-  }
-  if (request.body.search[1] === 'author') {
-    url += `+inauthor:${request.body.search[0]}`;
-  }
-  superagent.get(url)
-    .then(apiResponse => apiResponse.body.items.map(bookResult =>{
-      let loggedBook = new Book(bookResult.volumeInfo);
-      console.log('Is the book working?', loggedBook)
-      return new Book(bookResult.volumeInfo);
-    }))
-    .then(results => response.render(`pages/searches/show`, {searchResults: results}))
+  console.log('hello from get books');
+  const selectSQL = `SELECT * FROM books where search_query=$1;`;
+  //TODO: also broken
+  //const values = [request.query.info];
+  const values = [request.params.book_id];
+
+
+  client.query(selectSQL)
+    .then(result => {
+      if(result.rowCount > 0){
+        response.send(result.rows[0]);
+      } else{
+        // beginning of url
+        console.log('===========this is request.body.search', request.body.search)
+        let url=`https://www.googleapis.com/books/v1/volumes?q=`;
+        if (request.body.search[1] === 'title') {
+          url += `+intitle:${request.body.search[0]}`;
+        }
+        if (request.body.search[1] === 'author') {
+          url += `+inauthor:${request.body.search[0]}`;
+        }
+        //end of url
+        superagent.get(url)
+          .then(apiResponse => {
+            console.log('========API RESPONSE==========', apiResponse.body)
+
+            if (!apiResponse.body.items.volumeInfo.title) {
+              throw 'NO BOOK INFORMATION';
+            } else {
+              let loggedBook = new Book(bookResult.volumeInfo, request.query);
+
+              let insertSql = `INSERT INTO books (authors, title, description, isbn, thumbnail) VALUES($1, $2, $3, $4, $5) RETURNING id;`;
+              let newValues = Object.values(loggedBook);
+
+              client.query(insertSql, newValues)
+                .then(sqlReturn => {
+                  loggedBook.id = sqlReturn.rows[0].id;
+                  response.send(loggedBook);
+                });
+            }
+          });
+      }
+    })
+
     .catch(error => handleError(error, response))
+    // .then(apiResponse => apiResponse.body.items.map(bookResult =>{
+    //   return new Book(bookResult.volumeInfo);
+    // }))
+    // .then(results => response.render(`pages/searches/show`, {searchResults: results}))
+    // .catch(error => handleError(error, response))
 }
 

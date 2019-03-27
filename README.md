@@ -38,7 +38,7 @@ Estimate of time needed to complete: 1 hour
 
 Start time:10:43
 
-Finish time:
+Finish time: finished overnight
 
 Actual time needed to complete:
 -------------------------------------------------------
@@ -59,9 +59,9 @@ Estimate of time needed to complete: 30 minutes
 
 Start time:11:12
 
-Finish time:
+Finish time: 11:26
 
-Actual time needed to complete:
+Actual time needed to complete: 14 minutes
 
 -------------------------------------------------------
 Number and name of feature: Feature 5 - clean UI/front end
@@ -74,7 +74,20 @@ Finish time:
 
 Actual time needed to complete:
 
+-------------------------------------------------------
+Number and name of feature: Feature 6 - save books to sql database
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 10:00 am
+
+Finish time:
+
+Actual time needed to complete:
+
 ## Credits and Collaborations
 
 Code Fellows supplied wireframes, practice, tutorials, general help, and project guidelines
 Caity Heath provided TA support and troubleshooting
+
+Jesse and Jag helped with express explanations
