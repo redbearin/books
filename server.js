@@ -36,9 +36,11 @@ app.get('/books/:book_id', getOneBook)
 app.get('/books/show', getBooksFromDB)
 
 //TODO: bring back in when getBooks is fully resolved
-//app.post('/searches/show', addBookToDB)
+//
+app.post('/searches/show', addBookToDB)
 
 //creates a new search to Google Books API
+//TODO: this route works do not touch
 app.post('/searches/show', booksFromAPI);
 
 
