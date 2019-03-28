@@ -51,6 +51,7 @@ app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 //error handler
 function handleError(err, res){
+  console.error(err)
   if (res) res.status(500).send('You have achieved an error. Congratulations!');
 }
 
@@ -113,6 +114,7 @@ function booksFromAPI(request, response) {
   if (request.body.search[1] === 'author') {
     url += `+inauthor:${request.body.search[0]}`;
   }
+  console.log(url)
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render(`pages/searches/show`, {searchResults: results}))
@@ -129,74 +131,6 @@ function Book(info) {
   this.title = info.title || 'No title available';
   this.description = info.description || 'No description available';
   this.isbn = info.isbn || 'No ISBN available';
-  this.thumbnail = info.imageLinks.thumbnail.replace('http://', 'https://') || placeholderImage;
+  this.thumbnail = info.imageLinks ? info.imageLinks.thumbnail.replace('http://', 'https://') : placeholderImage;
 }
-
-
-
-
-
-
-
-
-
-
-
-// ======================CORPRSE CODE=================
-//brings you to the original search form
-// function newBookSearch (request, response) {
-//   response.render('pages/index');
-// }
-
-//function to make query for book info
-// function getBooks(request, response) {
-//   let url=`https://www.googleapis.com/books/v1/volumes?q=`;
-//   console.log(request.body);
-//   if (request.body.search[1] === 'title') {
-//     url += `+intitle:${request.body.search[0]}`;
-//   }
-//   if (request.body.search[1] === 'author') {
-//     url += `+inauthor:${request.body.search[0]}`;
-//   }
-//   superagent.get(url)
-//     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
-//     .then(results => response.render(`pages/searches/show`, {searchResults: results}))
-//     .catch(error => handleError(error, response));
-// }
-
-
-
-// function getOneBook(request, response){
-//   console.log('BOOK ID', request.params.book_id);
-
-//   let SQL = 'SELECT * FROM books WHERE id=$1;';
-//   let values = [request.params.book_id];
-
-//   return client.query(SQL, values)
-//     .then(bookResult =>{
-//       return response.render('pages/detail', {book: bookResult.rows[0]});
-//     })
-//     .catch(error => handleError(error, response));
-// }
-
-//TODO: add getBooksFromDB function
-
-//TODO: we need to add a route for the function and modify the routes for the newSearch functions
-
-// function addBookToDB(request, response){
-//   console.log(request.body);
-
-//   let{authors, title, description, isbn, thumbnail} = request.body;
-
-//   let SQL= 'INSERT INTO books(authors, title, description, isbn, thumbnail) VALUES ($1, $2, $3, $4, $5);';
-//   let values = [authors, title, description, isbn, thumbnail];
-
-//   return client.query(SQL, values)
-//     .then(sqlResult =>{
-//       console.log(sqlResult);
-//       response.redirect('/')
-//     })
-//     .catch(error => handleError(error, response));
-// }
-
 

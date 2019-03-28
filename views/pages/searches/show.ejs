@@ -23,12 +23,13 @@
                     <p class="bookDescription"><%=book.description %></p>
                     <fieldset>
                         <label for="Select">
-                          <!-- <span>Select this Book</span> -->
-                          <!-- <input type="radio" name="select" value="selected-book" required> -->
-                          <!-- TODO: prevent default on this button -->
                           <button>Select This Book</button>
                         </label>
-                      </fieldset>
+                    </fieldset>
+                </li>
+
+                <li>
+                    <%- include('../books/edit',{book: book});%>
                 </li>
             <% }); %>    
         </ul> 
