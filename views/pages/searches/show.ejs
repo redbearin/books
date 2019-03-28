@@ -23,14 +23,17 @@
                     <p class="bookDescription"><%=book.description %></p>
                     <fieldset>
                         <label for="Select">
-                          <span>Select this Book</span>
-                          <input type="radio" name="select" value="selected-book" required>
+                          <!-- <span>Select this Book</span> -->
+                          <!-- <input type="radio" name="select" value="selected-book" required> -->
+                          <!-- TODO: prevent default on this button -->
+                          <button>Select This Book</button>
                         </label>
                       </fieldset>
                 </li>
             <% }); %>    
         </ul> 
     </main>  
+    <script src=“https://code.jquery.com/jquery-3.3.1.min.js”   integrity=“sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=”   crossorigin=“anonymous”></script>
 </body>
 </html>
 
