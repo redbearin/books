@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 //API routes
 //path to view page/home route
 
+//path to index
 app.get('/', getBooksFromDB);
 
 app.post('/books/show', addBookToDB);
@@ -134,7 +135,7 @@ function Book(info) {
   this.authors = info.authors || 'No author available';
   this.title = info.title || 'No title available';
   this.description = info.description || 'No description available';
-  this.isbn = info.isbn || 'No ISBN available';
+  this.isbn = info.industryIdentifiers[0].identifier || 'No ISBN available';
   this.thumbnail = info.imageLinks ? info.imageLinks.thumbnail.replace('http://', 'https://') : placeholderImage;
 }
 
