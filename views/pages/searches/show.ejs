@@ -18,14 +18,16 @@
             <% searchResults.forEach(book => { %>
                 <!-- assign id based on isbn-->
                 
-                <li class="content" id="<%= book.isbn %>"></li>
-                    <img src="<%=book.thumbnail%>" alt="image of <%= book.thumbnail %>">
-                    <h3 class="bookTitle"><%=book.title %></h3>
-                    <h5 class="bookAuthors"><%=book.authors%></h5>
-                    <p class="bookDescription"><%=book.description %></p>
-                    <p class="bookISBN"><%=book.isbn %></p>
+                <li class="content"></li>
+                    <div id="apicontent">
+                        <img src="<%=book.thumbnail%>" alt="image of <%= book.thumbnail %>">
+                        <h3 class="bookTitle"><%=book.title %></h3>
+                        <h5 class="bookAuthors"><%=book.authors%></h5>
+                        <p class="bookDescription"><%=book.description %></p>
+                        <p class="bookISBN"><%=book.isbn %></p>
+                    </div>  
                     <button id="<%= book.isbn %>">Select This Book</button>
-                    <div>
+                    <div style="display: none">
                         <%- include('../books/edit',{book: book});%>
                     </div>
                 </li>

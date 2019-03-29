@@ -7,6 +7,12 @@ $(document).ready(function(){
 
 //when the button is clicked
 $('button').on('click', function(){
-  $('button + div').show();
+  $(this)
+    .next()
+    .attr("style", "display:inline");
+  // console.log('here i am')
+  // // $('button div').show();
+  // // console.log(this.sibling());
+  // // $(this).next().show();
 });
 
