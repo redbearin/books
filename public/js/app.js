@@ -2,21 +2,11 @@
 
 //class of isbn defaults to hidden
 $(document).ready(function(){
-  $('show_class').hide();
+  $('button + div').hide();
 })
 
-//when the button is clicked, the id of isbn is hidden and the class of isbn is shown
-//we need to be able to target the button by id
+//when the button is clicked
 $('button').on('click', function(){
-  console.log(this.id)
-  let show_class = `.${this.id}`;
-  let hide_id = `#${this.id}`;
-  $('show_class').show();
-  $(`#${this.id}`).hide();
-
+  $('button + div').show();
 });
 
-
-// $('#book.isbn'.click(function(){
-//   $('.content').toggle();
-// }))

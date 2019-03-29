@@ -24,16 +24,14 @@
                     <h5 class="bookAuthors"><%=book.authors%></h5>
                     <p class="bookDescription"><%=book.description %></p>
                     <p class="bookISBN"><%=book.isbn %></p>
-                    <fieldset>
-                        <label for="Select">
-                          <button id="<%= book.isbn %>">Select This Book</button>
-                        </label>
-                    </fieldset>
+                    <button id="<%= book.isbn %>">Select This Book</button>
+                    <div>
+                        <%- include('../books/edit',{book: book});%>
+                    </div>
                 </li>
-
-                <li class="<%= book.isbn %>">
-                    <%- include('../books/edit',{book: book});%>
-                </li>
+<!-- 
+                <li class="<%= book.isbn %>"> -->
+  
             <% }); %>    
         </ul> 
     </main>  
