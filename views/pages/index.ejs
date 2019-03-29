@@ -14,7 +14,10 @@
       <% bookResultsFromDB.forEach(book => { %>
         <li class="book-item" data-id="<%= book.id %>">
         <p><%= book.title %></p>
-        <a href="/books/detail <%= book.id%>">View book details</a>
+        <p><%= book.authors %></p>
+        <img src="<%= book.thumbnail %>" />
+        <p><%= book.description %></p>
+        <a href="/books/<%= book.id%>">View book details</a>
       </li>
      <% }) %>
     </ul>
