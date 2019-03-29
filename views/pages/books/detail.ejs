@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <section class="book-view-container">
+<ul id="book-list">
+  <li class="book-item" data-id="<%= book.id %>">
+    <p><%= book.title%></p>
+    <p><%= book.authors %></p>
+    <img src="<%= book.thumbnail %>" />
+    <p><%= book.description %></p>
+  </li>
+</ul>
+  </section>
+</body>
+</html>
