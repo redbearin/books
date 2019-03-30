@@ -1,1 +1,33 @@
 <!--populate with contents from DB -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet"  href="../styles/reset.css">
+  <link rel="stylesheet"  href="../styles/base.css">
+  <link rel="stylesheet"  href="../styles/layout.css">
+  <link rel="stylesheet"  href="../styles/modules.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+  <title>Document</title>
+</head>
+<body>
+    <a href="./searches/new">Click here to search for a new book.</a>
+  <section class="book-view-container">
+    <ul id="book-list">
+      <% bookResultsFromDB.forEach(book => { %>
+        <li class="book-item" data-id="<%= book.id %>">
+        <p><%= book.title %></p>
+        <p><%= book.authors %></p>
+        <img src="<%= book.thumbnail %>" />
+        <p><%= book.description %></p>
+        <a href="/books/<%= book.id%>">View book details</a>
+      </li>
+     <% }) %>
+    </ul>
+
+  </section>
+</body>
+</html>

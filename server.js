@@ -25,6 +25,12 @@ app.set('view engine', 'ejs');
 
 //API routes
 //path to view page/home route
+
+//path to index
+app.get('/', getBooksFromDB);
+
+app.post('/books/show', addBookToDB);
+
 //TODO: this route works fine no touch
 app.get('/searches/new', newBookSearchForm);
 
@@ -33,7 +39,7 @@ app.get('/searches/new', newBookSearchForm);
 app.get('/books/:book_id', getOneBook)
 
 
-app.get('/books/show', getBooksFromDB)
+//app.get('/books/show', getBooksFromDB)
 
 //TODO: bring back in when getBooks is fully resolved
 //
@@ -62,14 +68,14 @@ function newBookSearchForm (request, response) {
 }
 
 function getOneBook(request, response){
-  console.log('BOOK ID', request.params.book_id);
+  //console.log('BOOK ID', request.params.book_id);
 
   let SQL = 'SELECT * FROM books WHERE id=$1;';
   let values = [request.params.book_id];
 
   return client.query(SQL, values)
     .then(bookResult =>{
-      return response.render('pages/detail', {book: bookResult.rows[0]});
+      return response.render('pages/books/detail', {book: bookResult.rows[0]});
     })
     .catch(error => handleError(error, response));
 }
@@ -80,14 +86,14 @@ function getBooksFromDB (request, response){
 
   return client.query(SQL)
     .then(bookResultsFromDB =>{
-      console.log(bookResultsFromDB);
-      response.render('/books/show', {bookResultsFromDB: bookResultsFromDB.rows})
+      //console.log(bookResultsFromDB);
+      response.render('pages/index', {bookResultsFromDB: bookResultsFromDB.rows})
     })
     .catch(handleError);
 }
 
 function addBookToDB(request, response){
-  console.log(request.body);
+ console.log(request.body);
 
   let{authors, title, description, isbn, thumbnail} = request.body;
 
@@ -96,7 +102,7 @@ function addBookToDB(request, response){
 
   return client.query(SQL, values)
     .then(sqlResult =>{
-      console.log(sqlResult);
+     //console.log(sqlResult);
       response.redirect('/')
     })
     .catch(error => handleError(error, response));
@@ -105,16 +111,15 @@ function addBookToDB(request, response){
 
 
 function booksFromAPI(request, response) {
-  console.log('hit the books from API page')
   let url=`https://www.googleapis.com/books/v1/volumes?q=`;
-  console.log(request.body);
+  //console.log(request.body);
   if (request.body.search[1] === 'title') {
     url += `+intitle:${request.body.search[0]}`;
   }
   if (request.body.search[1] === 'author') {
     url += `+inauthor:${request.body.search[0]}`;
   }
-  console.log(url)
+ // console.log(url)
   superagent.get(url)
     .then(apiResponse => apiResponse.body.items.map(bookResult => new Book(bookResult.volumeInfo)))
     .then(results => response.render(`pages/searches/show`, {searchResults: results}))
@@ -130,7 +135,7 @@ function Book(info) {
   this.authors = info.authors || 'No author available';
   this.title = info.title || 'No title available';
   this.description = info.description || 'No description available';
-  this.isbn = info.isbn || 'No ISBN available';
+  this.isbn = info.industryIdentifiers[0].identifier || 'No ISBN available';
   this.thumbnail = info.imageLinks ? info.imageLinks.thumbnail.replace('http://', 'https://') : placeholderImage;
 }
 

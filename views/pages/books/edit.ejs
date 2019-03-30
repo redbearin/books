@@ -1,3 +1,15 @@
 
         <!-- <input type="text" name="search" placeholder="<%=book.title %>" required> -->
-        <p><%=book.title %></p>
+        <form action="books/show" method="post">
+                Title: <input type="text" name="title" value="<%=book.title %>"> 
+                <br>
+                Author: <input type="text" name="author" value="<%=book.authors %>"> 
+                <br>
+                <!-- Description: <textarea name="description" value="<%=book.description %>" rows="10" columbns="30"> -->
+                Description: <input type="text" name="description" value="<%=book.description %>"> 
+                <br>
+                Image url: <input type="text" name="image-url" value="<%=book.thumbnail %>"> 
+                <br>
+                <button type="submit">Add to your Bookshelf</button>
+         </form>
+

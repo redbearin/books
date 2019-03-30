@@ -16,25 +16,31 @@
             <h1>My book list</h1>
         <ul>
             <% searchResults.forEach(book => { %>
-                <li class="content">
-                    <img src="<%=book.thumbnail%>" alt="image of <%= book.thumbnail %>">
-                    <h3 class="bookTitle"><%=book.title %></h3>
-                    <h5 class="bookAuthors"><%=book.authors%></h5>
-                    <p class="bookDescription"><%=book.description %></p>
-                    <fieldset>
-                        <label for="Select">
-                          <button class="toggle-edit">Select This Book</button>
-                        </label>
-                    </fieldset>
+                <!-- assign id based on isbn-->
+                
+                <li class="content"></li>
+                    <div id="apicontent">
+                        <img src="<%=book.thumbnail%>" alt="image of <%= book.thumbnail %>">
+                        <h3 class="bookTitle"><%=book.title %></h3>
+                        <h5 class="bookAuthors"><%=book.authors%></h5>
+                        <p class="bookDescription"><%=book.description %></p>
+                        <p class="bookISBN"><%=book.isbn %></p>
+                    </div>  
+                    <button id="<%= book.isbn %>">Select This Book</button>
+                    <div style="display: none">
+                        <%- include('../books/edit',{book: book});%>
+                    </div>
                 </li>
-
-                <li class="summary">
-                    <%- include('../books/edit',{book: book});%>
-                </li>
+<!-- 
+                <li class="<%= book.isbn %>"> -->
+  
             <% }); %>    
         </ul> 
     </main>  
-    <script src=“https://code.jquery.com/jquery-3.3.1.min.js”></script>
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
     <script src="../js/app.js"></script>
 </body>
 </html>
