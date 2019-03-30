@@ -34,7 +34,7 @@
     font-size: 3ems;
 }
 
-/*  */
+/* base computer layout*/
 @media(min-width: 481px){
     main{
         display: flex;
